@@ -1,6 +1,8 @@
 <template>
+
   <div class="login_container">
     <div class="login_box">
+      <el-link type="primary" :underline="false" href="/Home" class="loginTitle">{{this.loginForm.title}}</el-link>
       <el-form ref="loginForm" :rules="rules" :model="loginForm" label-width="80px">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="loginForm.name"></el-input>
@@ -23,7 +25,8 @@
       return {
         loginForm: {
           name: '',
-          password: ''
+          password: '',
+          title: 'Bowen博客'
         },
         rules: {
           name: [
@@ -67,12 +70,19 @@
 </script>
 
 <style lang="less" scoped>
-  .login_container {
-    background-color: #2b4b6b;
-    height: 100%;
+
+  /*登录注册标题*/
+  .loginTitle {
+    text-align: center;
+    font-size: 26px;
+    padding-top: 50px;
+    margin-bottom: 20px;
+    background-color: white;
   }
 
+
   .login_box {
+    text-align: center;
     width: 450px;
     height: 300px;
     background-color: #fff;
