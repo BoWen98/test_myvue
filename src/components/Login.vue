@@ -1,16 +1,16 @@
 <template>
   <div class="login_container">
     <div class="login_box">
-      <el-form ref="formVue" :model="loginForm" label-width="80px">
-        <el-form-item label="姓名">
+      <el-form ref="loginForm" :rules="rules" :model="loginForm" label-width="80px">
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="loginForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="loginForm.password"></el-input>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" @click="login">登录</el-button>
-          <el-button type="primary">主要按钮</el-button>
+          <el-button type="success" @click="login('loginForm')">登录</el-button>
+          <el-button type="primary" @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -24,20 +24,43 @@
         loginForm: {
           name: '',
           password: ''
+        },
+        rules: {
+          name: [
+            {required: true, message: '请输入用户账号', trigger: 'blur'},
+            {min: 1, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: '请输入用户密码', trigger: 'blur'},
+            {min: 1, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+          ]
         }
       }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!');
+
+      /*this.$http.post('/api/login', this.loginForm).then(
+        res => {
+          console.log(res)
+          if (res.data !== 200) return this.$message.error('登录失败！')
+          this.$message.success('登录成功')
+          this.$router.push('/home')
+        })*/
+      login(loginForm) {
+        this.$refs[loginForm].validate((valid) => {
+          if (valid) {
+            this.$http.post('/api/login', this.loginForm).then(
+              res => {
+                console.log(res)
+                if (res.data !== 200) return this.$message.error('登录失败！')
+                this.$message.success('登录成功')
+                this.$router.push('/home')
+              })
+          }
+        });
       },
-      login() {
-        this.$http.post('http://localhost:8300/login', this.loginForm).then(
-          res => {
-            if (res.data !== 200) return this.$message.error('登录失败！')
-            this.$message.success('登录成功')
-            this.$router.push('/home')
-          })
+      resetForm(loginForm) {
+        this.$refs[loginForm].resetFields();
       }
     }
   }
