@@ -7,6 +7,8 @@ import App from './App.vue';
 import './plugins/element.js'
 import router from './router/router.js'
 import axios from 'axios'
+import store from './store'
+import 'font-awesome/css/font-awesome.css'
 
 Vue.use(ElementUI);
 Vue.use(router);
